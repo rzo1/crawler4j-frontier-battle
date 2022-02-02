@@ -38,7 +38,7 @@ public abstract class AbstractFrontierController {
 
     private CrawlConfig configure() {
         final CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder("/tmp/crawler4j/");
+        config.setCrawlStorageFolder("/tmp/crawler4j");
         config.setPolitenessDelay(200);
         config.setMaxDepthOfCrawling(-1);
         config.setMaxPagesToFetch(-1);
