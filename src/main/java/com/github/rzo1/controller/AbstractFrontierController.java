@@ -17,6 +17,7 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.util.List;
 
 import static org.quartz.JobBuilder.newJob;
@@ -38,7 +39,7 @@ public abstract class AbstractFrontierController {
 
     private CrawlConfig configure() {
         final CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder("/tmp/crawler4j");
+        config.setCrawlStorageFolder(System.getProperty("java.io.tmpdir") + File.separator + "crawler4j");
         config.setPolitenessDelay(200);
         config.setMaxDepthOfCrawling(-1);
         config.setMaxPagesToFetch(-1);
