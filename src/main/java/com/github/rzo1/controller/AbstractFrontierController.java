@@ -157,8 +157,9 @@ public abstract class AbstractFrontierController {
             final JobDataMap map = context.getMergedJobDataMap();
             final CrawlController controller = (CrawlController) map.get(CONTROLLER_KEY);
 
-            logger.info("Processed pages: {}", controller.getFrontier().getNumberOfProcessedPages());
-            logger.info("Scheduled pages: {}", controller.getFrontier().getNumberOfScheduledPages());
+            logger.info("Scheduled pages: {}, Processed pages: {}",
+                    controller.getFrontier().getNumberOfScheduledPages(),
+                    controller.getFrontier().getNumberOfProcessedPages());
         }
     }
 }
