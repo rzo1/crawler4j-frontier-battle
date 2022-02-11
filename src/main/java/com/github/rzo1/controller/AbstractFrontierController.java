@@ -2,9 +2,11 @@ package com.github.rzo1.controller;
 
 import com.github.rzo1.crawler.FrontierWebCrawler;
 import crawlercommons.filters.basic.BasicURLNormalizer;
+import de.hhn.mi.ConsoleProgressBar;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
+import edu.uci.ics.crawler4j.frontier.Frontier;
 import edu.uci.ics.crawler4j.frontier.FrontierConfiguration;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
@@ -18,6 +20,11 @@ import org.quartz.Trigger;
 import org.slf4j.Logger;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 
 import static org.quartz.JobBuilder.newJob;
@@ -66,9 +73,22 @@ public abstract class AbstractFrontierController {
         try {
             final CrawlController controller = init();
 
+            long start = System.currentTimeMillis();
+
+            ConsoleProgressBar consoleProgressBar = new ConsoleProgressBar(0.025, "Inserting Seeds");
+            consoleProgressBar.update(0);
+
+            long i = 0;
             for (String seed : seeds) {
                 controller.addSeed(seed);
+                consoleProgressBar.update((double) i / seeds.length);
+                i++;
             }
+            consoleProgressBar.update(1);
+
+            long end = System.currentTimeMillis() - start;
+
+            logger.info("#### Took {} ms to insert seeds", end);
 
             final CrawlController.WebCrawlerFactory<FrontierWebCrawler> factory = FrontierWebCrawler::new;
 
@@ -156,10 +176,18 @@ public abstract class AbstractFrontierController {
 
             final JobDataMap map = context.getMergedJobDataMap();
             final CrawlController controller = (CrawlController) map.get(CONTROLLER_KEY);
+            final Frontier frontier = controller.getFrontier();
+            final Path store = Paths.get(controller.getConfig().getCrawlStorageFolder() + File.separator + "stats.txt");
 
             logger.info("Scheduled pages: {}, Processed pages: {}",
-                    controller.getFrontier().getNumberOfScheduledPages(),
-                    controller.getFrontier().getNumberOfProcessedPages());
+                    frontier.getNumberOfScheduledPages(),
+                    frontier.getNumberOfProcessedPages());
+
+            try {
+                Files.writeString(store, frontier.getNumberOfScheduledPages() + ";" + frontier.getNumberOfProcessedPages() + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            } catch (IOException e) {
+                logger.warn(e.getLocalizedMessage(), e);
+            }
         }
     }
 }
