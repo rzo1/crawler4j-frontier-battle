@@ -48,7 +48,7 @@ public abstract class AbstractFrontierController {
         final CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(System.getProperty("java.io.tmpdir") + File.separator + "crawler4j");
         config.setPolitenessDelay(200);
-        config.setMaxDepthOfCrawling(3);
+        config.setMaxDepthOfCrawling(3); // we only aim for a max depth of 3
         config.setMaxPagesToFetch(-1);
         config.setIncludeBinaryContentInCrawling(false);
         config.setResumableCrawling(true);
@@ -62,6 +62,9 @@ public abstract class AbstractFrontierController {
         final BasicURLNormalizer normalizer = BasicURLNormalizer.newBuilder().idnNormalization(BasicURLNormalizer.IdnNormalization.NONE).build();
         final PageFetcher pageFetcher = new PageFetcher(config, normalizer);
         final RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
+        robotstxtConfig.setEnabled(true);
+        robotstxtConfig.setCacheSize(10000); // we have enough memory available, so we cache 10k hosts
+        robotstxtConfig.setSkipCheckForSeeds(true); // we skip the robots checks for adding seeds (will be checked later on demand)
         final FrontierConfiguration frontierConfiguration = getFrontierConfiguration(config);
         final RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher, frontierConfiguration.getWebURLFactory());
         return new CrawlController(config, normalizer, pageFetcher, robotstxtServer, frontierConfiguration);
@@ -138,7 +141,7 @@ public abstract class AbstractFrontierController {
                 .withIdentity("StatsTrigger")
                 .startNow()
                 .withSchedule(simpleSchedule()
-                        .withIntervalInSeconds(10)
+                        .withIntervalInSeconds(30)
                         .repeatForever())
                 .usingJobData(m)
                 .build();
@@ -165,6 +168,16 @@ public abstract class AbstractFrontierController {
             if (!controller.isShuttingDown()) {
                 logger.info("Shutting down...");
                 controller.shutdown();
+
+                // Wait for 30 seconds
+                try {
+                    Thread.sleep(30 * 1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+
+                //terminate the JVM
+                System.exit(0);
             }
         }
     }

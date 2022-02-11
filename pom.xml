@@ -56,21 +56,21 @@
         <dependency>
             <artifactId>crawler4j-with-sleepycat</artifactId>
             <groupId>de.hs-heilbronn.mi</groupId>
-            <version>4.8.0</version>
+            <version>4.8.1-SNAPSHOT</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <artifactId>crawler4j-with-hsqldb</artifactId>
             <groupId>de.hs-heilbronn.mi</groupId>
-            <version>4.8.0</version>
+            <version>4.8.1-SNAPSHOT</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <artifactId>crawler4j-with-urlfrontier</artifactId>
             <groupId>de.hs-heilbronn.mi</groupId>
-            <version>4.8.0</version>
+            <version>4.8.1-SNAPSHOT</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
