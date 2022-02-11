@@ -38,15 +38,17 @@ public abstract class AbstractFrontierController {
     private static boolean skipFirst = true;
     private final Scheduler scheduler;
     private final int terminateAfterXMinutes;
+    private final Path storagePath;
 
-    public AbstractFrontierController(Scheduler scheduler, int terminateAfterXMinutes) {
+    public AbstractFrontierController(Scheduler scheduler, Path storagePath, int terminateAfterXMinutes) {
         this.scheduler = scheduler;
         this.terminateAfterXMinutes = terminateAfterXMinutes;
+        this.storagePath = storagePath;
     }
 
     private CrawlConfig configure() {
         final CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder(System.getProperty("java.io.tmpdir") + File.separator + "crawler4j");
+        config.setCrawlStorageFolder(storagePath.toAbsolutePath().toString());
         config.setPolitenessDelay(200);
         config.setMaxDepthOfCrawling(3); // we only aim for a max depth of 3
         config.setMaxPagesToFetch(-1);
@@ -132,7 +134,7 @@ public abstract class AbstractFrontierController {
                 .withIdentity("StopTrigger")
                 .startNow()
                 .withSchedule(simpleSchedule()
-                        .withIntervalInHours(terminateAfterXMinutes)
+                        .withIntervalInMinutes(terminateAfterXMinutes)
                         .repeatForever())
                 .usingJobData(m)
                 .build();
@@ -168,16 +170,6 @@ public abstract class AbstractFrontierController {
             if (!controller.isShuttingDown()) {
                 logger.info("Shutting down...");
                 controller.shutdown();
-
-                // Wait for 30 seconds
-                try {
-                    Thread.sleep(30 * 1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
-                //terminate the JVM
-                System.exit(0);
             }
         }
     }

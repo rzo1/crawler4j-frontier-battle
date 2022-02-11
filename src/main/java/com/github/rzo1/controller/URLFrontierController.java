@@ -5,10 +5,12 @@ import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.frontier.FrontierConfiguration;
 import org.quartz.Scheduler;
 
+import java.nio.file.Path;
+
 public class URLFrontierController extends AbstractFrontierController {
 
-    public URLFrontierController(Scheduler scheduler, int terminateAfterXMinutes) {
-        super(scheduler, terminateAfterXMinutes);
+    public URLFrontierController(Scheduler scheduler, Path storagePath, int terminateAfterXMinutes) {
+        super(scheduler, storagePath, terminateAfterXMinutes);
     }
 
     @Override

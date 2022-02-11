@@ -5,10 +5,12 @@ import edu.uci.ics.crawler4j.frontier.FrontierConfiguration;
 import edu.uci.ics.crawler4j.frontier.SleepycatFrontierConfiguration;
 import org.quartz.Scheduler;
 
+import java.nio.file.Path;
+
 public class SleepycatFrontierController extends AbstractFrontierController {
 
-    public SleepycatFrontierController(Scheduler scheduler, int terminateAfterXMinutes) {
-        super(scheduler, terminateAfterXMinutes);
+    public SleepycatFrontierController(Scheduler scheduler, Path storagePath, int terminateAfterXMinutes) {
+        super(scheduler, storagePath, terminateAfterXMinutes);
     }
 
     @Override

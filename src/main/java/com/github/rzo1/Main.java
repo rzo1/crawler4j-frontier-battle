@@ -10,6 +10,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import picocli.CommandLine;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,6 +32,9 @@ public class Main implements Callable<Integer> {
     @CommandLine.Option(names = {"-s", "--seeds"}, description = "File with seeds", required = true)
     private Path seedPath;
 
+    @CommandLine.Option(names = {"-l", "--location"}, description = "Storage Location", required = false)
+    private Path storagePath = Path.of(System.getProperty("java.io.tmpdir") + File.separator + "crawler4j");
+
 
     public static void main(String... args) {
         System.exit(new CommandLine(new Main()).execute(args));
@@ -47,9 +51,9 @@ public class Main implements Callable<Integer> {
 
         String[] seeds = Files.readAllLines(seedPath).toArray(new String[0]);
         switch (this.frontier) {
-            case SLEEPYCAT -> c = new SleepycatFrontierController(scheduler, terminateAfterXMinutes).start(crawlers, seeds);
-            case HSQLDB -> c = new HSQLDBFrontierController(scheduler, terminateAfterXMinutes).start(crawlers, seeds);
-            case URLFRONTIER -> c = new URLFrontierController(scheduler, terminateAfterXMinutes).start(crawlers, seeds);
+            case SLEEPYCAT -> c = new SleepycatFrontierController(scheduler, storagePath, terminateAfterXMinutes).start(crawlers, seeds);
+            case HSQLDB -> c = new HSQLDBFrontierController(scheduler, storagePath, terminateAfterXMinutes).start(crawlers, seeds);
+            case URLFRONTIER -> c = new URLFrontierController(scheduler, storagePath, terminateAfterXMinutes).start(crawlers, seeds);
             default -> throw new RuntimeException("Unknown frontier");
         }
 
