@@ -50,7 +50,7 @@ public abstract class AbstractFrontierController {
         final CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(storagePath.toAbsolutePath().toString());
         config.setIncludeHttpsPages(true);
-        config.setPolitenessDelay(200);
+        config.setPolitenessDelay(800);
         config.setMaxDepthOfCrawling(3); // we only aim for a max depth of 3
         config.setMaxPagesToFetch(-1);
         config.setIncludeBinaryContentInCrawling(false);
