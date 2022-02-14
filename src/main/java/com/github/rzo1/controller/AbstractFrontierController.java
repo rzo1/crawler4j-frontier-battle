@@ -2,7 +2,6 @@ package com.github.rzo1.controller;
 
 import com.github.rzo1.crawler.FrontierWebCrawler;
 import crawlercommons.filters.basic.BasicURLNormalizer;
-import de.hhn.mi.ConsoleProgressBar;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
