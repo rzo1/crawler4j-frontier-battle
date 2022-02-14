@@ -74,11 +74,6 @@
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>de.hs-heilbronn.mi</groupId>
-            <artifactId>progress-indicator</artifactId>
-            <version>1.0.0</version>
-        </dependency>
     </dependencies>
 
     <build>

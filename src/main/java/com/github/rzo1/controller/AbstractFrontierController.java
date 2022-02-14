@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.quartz.JobBuilder.newJob;
@@ -81,16 +82,7 @@ public abstract class AbstractFrontierController {
 
             long start = System.currentTimeMillis();
 
-            ConsoleProgressBar consoleProgressBar = new ConsoleProgressBar(0.025, "Inserting Seeds");
-            consoleProgressBar.update(0);
-
-            long i = 0;
-            for (String seed : seeds) {
-                controller.addSeed(seed);
-                consoleProgressBar.update((double) i / seeds.length);
-                i++;
-            }
-            consoleProgressBar.update(1);
+            controller.addSeeds(Arrays.stream(seeds).toList());
 
             long end = System.currentTimeMillis() - start;
 
