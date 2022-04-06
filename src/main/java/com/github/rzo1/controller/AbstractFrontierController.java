@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,9 +80,11 @@ public abstract class AbstractFrontierController {
         try {
             final CrawlController controller = init();
 
+            logger.info("#### Inserting seeds");
+            
             long start = System.currentTimeMillis();
 
-            controller.addSeeds(Arrays.stream(seeds).toList());
+            controller.addSeeds(Arrays.asList(seeds));
 
             long end = System.currentTimeMillis() - start;
 

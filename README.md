@@ -3,7 +3,7 @@
 ## Requirements
 
 - Maven 3.8.0 +
-- Java 17
+- Java 8 +
 
 ## Build
 
