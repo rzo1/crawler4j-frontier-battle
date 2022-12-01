@@ -11,6 +11,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <crawler4j.version>5.0.0</crawler4j.version>
     </properties>
 
 
@@ -56,21 +57,21 @@
         <dependency>
             <artifactId>crawler4j-with-sleepycat</artifactId>
             <groupId>de.hs-heilbronn.mi</groupId>
-            <version>4.8.1</version>
+            <version>${crawler4j.version}</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <artifactId>crawler4j-with-hsqldb</artifactId>
             <groupId>de.hs-heilbronn.mi</groupId>
-            <version>4.8.1</version>
+            <version>${crawler4j.version}</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <artifactId>crawler4j-with-urlfrontier</artifactId>
             <groupId>de.hs-heilbronn.mi</groupId>
-            <version>4.8.1</version>
+            <version>${crawler4j.version}</version>
             <type>pom</type>
             <scope>compile</scope>
         </dependency>
